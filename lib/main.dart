@@ -27,9 +27,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Hello')),
-        body: const AuthScreen(),
+      home: const Scaffold(
+        body: AuthScreen(),
       ),
     );
   }
