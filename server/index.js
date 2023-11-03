@@ -9,6 +9,7 @@ const app = express()
 const DB = "mongodb+srv://rahmandanosa:01022005nosa@cluster0.ydidirg.mongodb.net/?retryWrites=true&w=majority"
 
 // MIDDLEWARE
+app.use(express.json())
 app.use(authRouter)
 
 // CREATING AN API
@@ -27,6 +28,6 @@ mongoose.connect(DB).then(() => {
     console.log(e)
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Connected at port ${PORT}`)
 })
