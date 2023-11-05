@@ -55,4 +55,23 @@ authRouter.post('/api/signin', async (req, res) => {
     }
 })
 
+// SIGN IN
+authRouter.post('/tokenIsValid', async (req, res) => {
+    try {
+        const token = req.header('x-auth-token')
+        if (!token) return res.json(false)
+        const verify = jwt.verify(token, 'passwordKey')
+        if (!verify) return res.json(false)
+
+        const user = await User.findById(verify.id)
+        if (!user) return res.json(false)
+        res.json(true)
+    } catch (e) {
+        res.status(500).json({error: e.message})
+    }
+})
+
+// GET USER DATA
+authRouter.get('/', auth)
+
 module.exports = authRouter
