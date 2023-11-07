@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:omazon_ecommerce_app/common/widgets/bottom_bar.dart';
 import 'package:omazon_ecommerce_app/constants/error_handling.dart';
 import 'package:omazon_ecommerce_app/constants/utils.dart';
-import 'package:omazon_ecommerce_app/features/home/screens/home_screen.dart';
 import 'package:omazon_ecommerce_app/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:omazon_ecommerce_app/providers/user_provider.dart';
@@ -78,7 +78,7 @@ class AuthService {
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            HomeScreen.routeName,
+            BottomBar.routeName,
             (route) => false,
           );
         },
@@ -110,31 +110,18 @@ class AuthService {
 
       var response = jsonDecode(tokenRes.body);
 
-      if (response == true) {}
-      // http.Response res = await http.post(
-      //   Uri.parse('$uri/api/signin'),
-      //   body: jsonEncode({
-      //     'email': email,
-      //     'password': password,
-      //   }),
-      //   headers: <String, String>{
-      //     'Content-Type': 'application/json; charset=UTF-8',
-      //   },
-      // );
-      // httpErrorHandled(
-      //   response: res,
-      //   context: context,
-      //   onSuccess: () async {
-      //     SharedPreferences prefs = await SharedPreferences.getInstance();
-      //     Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-      //     await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
-      //     Navigator.pushNamedAndRemoveUntil(
-      //       context,
-      //       HomeScreen.routeName,
-      //       (route) => false,
-      //     );
-      //   },
-      // );
+      if (response == true) {
+        http.Response userRes = await http.get(
+          Uri.parse('$uri/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': token
+          },
+        );
+
+        var userProvider = Provider.of<UserProvider>(context, listen: false);
+        userProvider.setUser(userRes.body);
+      }
     } catch (e) {
       showSnackBar(context, e.toString());
     }

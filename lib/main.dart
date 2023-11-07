@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:omazon_ecommerce_app/common/widgets/bottom_bar.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
 import 'package:omazon_ecommerce_app/features/auth/screens/auth_screen.dart';
 import 'package:omazon_ecommerce_app/features/auth/services/auth_service.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    authService.getUserData(context);
   }
 
   @override
@@ -46,9 +48,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const Scaffold(
-        body: AuthScreen(),
-      ),
+      home: Provider.of<UserProvider>(context).user.token.isNotEmpty
+          ? const BottomBar()
+          : const Scaffold(
+              body: AuthScreen(),
+            ),
     );
   }
 }
