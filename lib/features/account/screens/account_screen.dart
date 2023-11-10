@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/account/widgets/below_app_bar.dart';
+import 'package:omazon_ecommerce_app/features/account/widgets/orders.dart';
+import 'package:omazon_ecommerce_app/features/account/widgets/top_buttons.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -44,7 +47,13 @@ class AccountScreen extends StatelessWidget {
         ),
       ),
       body: Column(
-        children: [],
+        children: const [
+          BelowAppBar(),
+          SizedBox(height: 10),
+          TopButtons(),
+          SizedBox(height: 20),
+          Orders(),
+        ],
       ),
     );
   }
