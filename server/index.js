@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const authRouter = require('./routes/auth.js')
+const adminRouter = require('./routes/admin.js')
 
 // INITIALIZE
 const PORT = 3000
@@ -11,6 +12,7 @@ const DB = "mongodb+srv://rahmandanosa:01022005nosa@cluster0.ydidirg.mongodb.net
 // MIDDLEWARE
 app.use(express.json())
 app.use(authRouter)
+app.use(adminRouter)
 
 // CREATING AN API
 app.get('/', (req, res) => {
