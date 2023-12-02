@@ -104,6 +104,11 @@ class _CategoryDealsScreenState extends State<CategoryDealsScreen> {
                               top: 5,
                               right: 15,
                             ),
+                            child: Text(
+                              product.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       );
