@@ -6,10 +6,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:omazon_ecommerce_app/common/widgets/custom_button.dart';
 import 'package:omazon_ecommerce_app/common/widgets/stars.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/product_detail/services/product_details_services.dart';
 import 'package:omazon_ecommerce_app/features/search/screens/search_screen.dart';
 import 'package:omazon_ecommerce_app/models/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
+  /// Route name can be used to navigate to the `ProductDetailScreen` from other parts of the application.
   static const String routeName = '/product-details';
   final Product product;
   const ProductDetailScreen({
@@ -22,6 +24,11 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  /// Allows the screen to access the methods and properties of the 'ProductDetailsServices` class.
+  final ProductDetailsServices productDetailsServices =
+      ProductDetailsServices();
+
+  /// Navigates to the search screen with a given query.
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
@@ -210,7 +217,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Icons.star,
                 color: GlobalVariable.secondaryColor,
               ),
-              onRatingUpdate: (rating) {},
+              onRatingUpdate: (rating) {
+                productDetailsServices.rateProduct(
+                  context: context,
+                  product: widget.product,
+                  rating: rating,
+                );
+              },
             ),
           ],
         ),

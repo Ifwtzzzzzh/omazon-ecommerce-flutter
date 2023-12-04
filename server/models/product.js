@@ -1,5 +1,8 @@
+/* Importing the Mongoose library */
 const mongoose = require('mongoose')
+const ratingSchema = require('./rating')
 
+/* Defining the structure and validation rules for a product document in a MongoDB database using Mongoose. */
 const productSchema = mongoose.Schema({
     name: {
         type: String,
@@ -29,7 +32,10 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    /* Defining a field called "ratings" that is an array of objects. */
+    ratings: [ratingSchema],
 })
 
-const Product = mongoose.model('Product', productSchema)
+/* This model represents a collection in the MongoDB database. */
+const Product = mongoose.model('Product', productSchema);
 module.exports = Product

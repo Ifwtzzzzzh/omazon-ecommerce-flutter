@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/constants/error_handling.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
@@ -17,21 +19,21 @@ class ProductDetailsServices {
 
     try {
       http.Response res = await http.post(
-        Uri.parse('$uri/admin/add-product'),
+        Uri.parse('$uri/api/rate-product'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': userProvider.user.token,
         },
-        body: product.toJson(),
+        body: jsonEncode({
+          'id': product.id!,
+          'rating': rating,
+        }),
       );
 
       httpErrorHandled(
         response: res,
         context: context,
-        onSuccess: () {
-          showSnackBar(context, 'Product Added Successfully!');
-          Navigator.pop(context);
-        },
+        onSuccess: () {},
       );
     } catch (e) {
       showSnackBar(context, e.toString());
