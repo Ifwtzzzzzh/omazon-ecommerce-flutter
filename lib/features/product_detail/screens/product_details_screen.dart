@@ -9,6 +9,8 @@ import 'package:omazon_ecommerce_app/constants/global_variables.dart';
 import 'package:omazon_ecommerce_app/features/product_detail/services/product_details_services.dart';
 import 'package:omazon_ecommerce_app/features/search/screens/search_screen.dart';
 import 'package:omazon_ecommerce_app/models/product.dart';
+import 'package:omazon_ecommerce_app/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   /// Route name can be used to navigate to the `ProductDetailScreen` from other parts of the application.
@@ -27,6 +29,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   /// Allows the screen to access the methods and properties of the 'ProductDetailsServices` class.
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
+  double avgRating = 0;
+  double myRating = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Calculate product average rating and user's own rating
+    double totalRating = 0;
+    for (int i = 0; i < widget.product.rating!.length; i++) {
+      totalRating += widget.product.rating![i].rating;
+      if (widget.product.rating![i].userId ==
+          Provider.of<UserProvider>(context, listen: false).user.id) {
+        myRating = widget.product.rating![i].rating;
+      }
+    }
+
+    // Calculate and set average rating
+    if (totalRating != 0) {
+      avgRating = totalRating / widget.product.rating!.length;
+    }
+  }
 
   /// Navigates to the search screen with a given query.
   void navigateToSearchScreen(String query) {
@@ -120,7 +144,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(widget.product.id!),
-                  const Stars(rating: 4),
+                  Stars(rating: avgRating),
                 ],
               ),
             ),
@@ -207,7 +231,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
             RatingBar.builder(
-              initialRating: 0,
+              initialRating: myRating,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,

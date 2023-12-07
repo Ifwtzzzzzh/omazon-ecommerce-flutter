@@ -64,5 +64,31 @@ productRouter.post('/api/rate-product', auth, async (req, res) => {
     }
 })
 
+// This API endpoint fetches all products and returns the one with the highest average rating as the "deal of the day".
+productRouter.post('/api/deal-of-day', auth, async (req, res) => {
+    try {
+        let products = await Product.find({})
+        
+        // Sort the products by average rating in descending order
+        products.sort((a, b) => {
+            let aSum = 0;
+            let bSum = 0;
+
+            for (let i = 0; i < a.ratings.length; i++) {
+                aSum += a.ratings[i].rating;
+            }
+
+            for (let i = 0; i < b.ratings.length; i++) {
+                bSum += b.ratings[i].rating;
+            }
+            return aSum < bSum ? 1 : -1
+        })
+        // Return the product with the highest average rating
+        res.json(products[0])
+    } catch (e) {
+        res.status(500).json({error: e.message})
+    }
+})
+
 /* This allows other files to import and use the `productRouter` object. */
 module.exports = productRouter
