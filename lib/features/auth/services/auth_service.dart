@@ -1,8 +1,9 @@
+// Import packages
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/common/widgets/bottom_bar.dart';
 import 'package:omazon_ecommerce_app/constants/error_handling.dart';
+import 'package:omazon_ecommerce_app/constants/global_variables.dart';
 import 'package:omazon_ecommerce_app/constants/utils.dart';
 import 'package:omazon_ecommerce_app/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -10,17 +11,17 @@ import 'package:omazon_ecommerce_app/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String uri = 'http://192.168.0.110:3000';
-
 class AuthService {
   // SIGN UP USER
   void signUpUser({
+    // Declares required parameters for login functionality (context, email, password, name).
     required BuildContext context,
     required String email,
     required String password,
     required String name,
   }) async {
     try {
+      // Empty user instance with default values.
       User user = User(
         id: '',
         name: name,
@@ -29,8 +30,10 @@ class AuthService {
         address: '',
         type: '',
         token: '',
+        cart: [],
       );
 
+      // POST user data to signup API with JSON content-type.
       http.Response res = await http.post(
         Uri.parse('$uri/api/signup'),
         body: user.toJson(),
@@ -39,6 +42,7 @@ class AuthService {
         },
       );
 
+      // Handle HTTP error and show success snackbar on success
       httpErrorHandled(
         response: res,
         context: context,
@@ -48,6 +52,7 @@ class AuthService {
         },
       );
     } catch (e) {
+      // Catches any exception and displays it as a snackbar.
       showSnackBar(context, e.toString());
     }
   }

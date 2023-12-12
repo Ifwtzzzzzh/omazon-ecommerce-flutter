@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const authRouter = require('./routes/auth.js')
 const adminRouter = require('./routes/admin.js')
 const productRouter = require('./routes/product.js')
+const userRouter = require('./routes/user.js')
 
 // INITIALIZE
 const PORT = 3000
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(authRouter)
 app.use(adminRouter)
 app.use(productRouter)
+app.use(userRouter)
 
 // CREATING AN API
 app.get('/', (req, res) => {

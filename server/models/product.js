@@ -38,4 +38,4 @@ const productSchema = mongoose.Schema({
 
 /* This model represents a collection in the MongoDB database. */
 const Product = mongoose.model('Product', productSchema);
-module.exports = Product
+module.exports = {Product, productSchema}

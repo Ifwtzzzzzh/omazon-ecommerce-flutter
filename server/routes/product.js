@@ -1,7 +1,7 @@
 /* Importing the necessary dependencies and modules for the product router. */
 const express = require("express")
 const auth = require("../middlewares/auth")
-const Product = require("../models/product")
+const {Product} = require("../models/product")
 const productRouter = express.Router()
 
 /* Defines a GET route for retrieving products from the server. */
@@ -34,13 +34,11 @@ productRouter.get('/api/products/search/:name', auth, async (req, res) => {
 productRouter.post('/api/rate-product', auth, async (req, res) => {
     /* Responsible for rating a product. */
     try {
-        /* `Allows you to directly access these properties without having
-        to use `req.body.id` and `req.body.rating`. */
+        /* `Allows you to directly access these properties without havingto use `req.body.id` and `req.body.rating`. */
         const {id, rating} = req.body
         let product = await Product.findById(id)
 
-        /* Essentially removing any existing rating by the current user for
-        the specified product before adding a new rating. */
+        /* Essentially removing any existing rating by the current user for the specified product before adding a new rating. */
         for (let i = 0; i < product.ratings.length; i++) {
             if (product.ratings[i].userId == req.user) {
                 product.ratings.splice(i, 1)
@@ -65,7 +63,7 @@ productRouter.post('/api/rate-product', auth, async (req, res) => {
 })
 
 // This API endpoint fetches all products and returns the one with the highest average rating as the "deal of the day".
-productRouter.post('/api/deal-of-day', auth, async (req, res) => {
+productRouter.get('/api/deal-of-day', auth, async (req, res) => {
     try {
         let products = await Product.find({})
         
