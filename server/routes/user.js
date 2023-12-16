@@ -2,10 +2,11 @@
 const express = require("express")
 const auth = require("../middlewares/auth")
 const User = require("../models/user")
+const { Product } = require("../models/product")
 const userRouter = express.Router()
 
 // Adds an item to the user's shopping cart (requires authentication)
-userRouter.post('/api/add-to-cart', auth, async (req, res) => {
+userRouter.post("/api/add-to-cart", auth, async (req, res) => {
     // Add product to user's cart, increment quantity if already exists
     try {
         // Extract product ID from request body and fetch both product and user
