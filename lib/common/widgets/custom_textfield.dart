@@ -1,6 +1,8 @@
+// Import packages
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
+  // Controllers to capture text input with optional hint and line limit."
   final TextEditingController controller;
   final String hintText;
   final int maxLines;

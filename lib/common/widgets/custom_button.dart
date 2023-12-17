@@ -1,6 +1,8 @@
+// Import packages.
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
+  // Data for a button with customizable text, tap action, and optional color
   final String text;
   final VoidCallback onTap;
   final Color? color;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/common/widgets/custom_button.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/address/screens/address_screen.dart';
 import 'package:omazon_ecommerce_app/features/cart/widgets/cart_product.dart';
 import 'package:omazon_ecommerce_app/features/cart/widgets/cart_subtotal.dart';
 import 'package:omazon_ecommerce_app/features/home/widgets/address_box.dart';
@@ -16,12 +17,19 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  // Push search screen with provided query as argument.
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
 
+  // Pushes AddressScreen onto navigation stack with its route name.
+  void navigateToAddress() {
+    Navigator.pushNamed(context, AddressScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Retrieves current user from UserProvider using watch
     final user = context.watch<UserProvider>().user;
 
     return Scaffold(
@@ -108,7 +116,7 @@ class _CartScreenState extends State<CartScreen> {
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
                 text: 'Proceed to Buy (${user.cart.length} items)',
-                onTap: () {},
+                onTap: navigateToAddress,
                 color: Colors.yellow[600],
               ),
             ),

@@ -9,6 +9,7 @@ class BelowAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Grabs the logged-in user from the UserProvider using context.
     final user = Provider.of<UserProvider>(context).user;
 
     return Container(

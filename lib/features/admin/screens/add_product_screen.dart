@@ -10,6 +10,7 @@ import 'package:omazon_ecommerce_app/constants/utils.dart';
 import 'package:omazon_ecommerce_app/features/admin/services/admin_services.dart';
 
 class AddProductScreen extends StatefulWidget {
+  // Constant route name for adding new products.
   static const String routeName = '/add-product';
   const AddProductScreen({Key? key}) : super(key: key);
 
@@ -18,16 +19,19 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+  // Four TextEditingControllers and an AdminServices instance for product management.
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final AdminServices adminServices = AdminServices();
 
+  // Declares category string, empty image list, and product add form key.
   String category = 'Mobiles';
   List<File> images = [];
   final _addProductFormKey = GlobalKey<FormState>();
 
+  // Cleaning up controllers when widget is removed from tree.
   @override
   void dispose() {
     super.dispose();
@@ -37,6 +41,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     quantityController.dispose();
   }
 
+  // Defines a list of five product categories for UI or backend use.
   List<String> productCategories = [
     'Mobiles',
     'Essentials',
@@ -45,6 +50,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     'Fashion'
   ];
 
+  // Submits validated product details and images to admin services for selling.
   void sellProduct() {
     if (_addProductFormKey.currentState!.validate() && images.isNotEmpty) {
       adminServices.sellProduct(
@@ -59,6 +65,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
+  // Select & update images from picker (async).
   void selectImages() async {
     var res = await pickImages();
     setState(() {

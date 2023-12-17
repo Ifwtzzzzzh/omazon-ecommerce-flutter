@@ -44,5 +44,32 @@ userRouter.post("/api/add-to-cart", auth, async (req, res) => {
     }
 })
 
+// Removes product from user cart 
+userRouter.delete("/api/remove-from-cart/:id", auth, async (req, res) => {
+    // Removes product from user cart, updating quantity if not removing entirely.
+    try {
+        // Extract product by ID, then fetch user from request, possibly for authorization or personalization.
+        const {id} = req.params
+        const product = await Product.findById(id)
+        let user = await User.findById(req.user)
+
+        // Remove or decrease one product from user cart
+        for (let i = 0; i < user.cart.length; i++) {
+            if (user.cart[i].product._id.equals(product._id)) {
+                if (user.cart[i].quantity == 1) {
+                    user.cart.splice(i, 1)
+                } else {
+                    user.cart[i].quantity -= 1
+                }
+            }
+        }
+        // Saves the user and returns it in the response.
+        user = await user.save()
+        res.json(user)
+    } catch (e) { // Used to handle any errors that occur within the `try` block.
+        res.status(500).json({error: e.message})
+    }
+})
+
 // Exports userRouter
 module.exports = userRouter

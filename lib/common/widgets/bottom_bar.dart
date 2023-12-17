@@ -1,3 +1,4 @@
+// Import Packages.
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
@@ -8,6 +9,7 @@ import 'package:omazon_ecommerce_app/providers/user_provider.dart';
 import 'package:provider/src/provider.dart';
 
 class BottomBar extends StatefulWidget {
+  // Defines an immutable route identifier for the "actual home" page.
   static const String routeName = '/actual-home';
   const BottomBar({Key? key}) : super(key: key);
 
@@ -16,16 +18,19 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+  // Tracks currently selected page index for bottom navigation bar.
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
 
+  // Main application pages - Home, Account, and Cart.
   List<Widget> pages = [
     const HomeScreen(),
     const AccountScreen(),
     const CartScreen(),
   ];
 
+  // Updates current page state based on provided integer index.
   void updatePage(int page) {
     setState(() {
       _page = page;
@@ -34,6 +39,7 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    // Get length of user's cart
     final userCartLen = context.watch<UserProvider>().user.cart.length;
 
     return Scaffold(
