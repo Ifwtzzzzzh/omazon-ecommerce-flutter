@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/common/widgets/custom_textfield.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
-import 'package:provider/src/provider.dart';
+import 'package:pay/pay.dart';
 
 class AddressScreen extends StatefulWidget {
   // Defines a static constant route name for navigating to the address screen.
@@ -20,6 +20,8 @@ class _AddressScreenState extends State<AddressScreen> {
   final TextEditingController cityController = TextEditingController();
   final _addressFormKey = GlobalKey<FormState>();
 
+  List<PaymentItem> paymentItems = [];
+
   // Cleans up controllers used in this widget.
   @override
   void dispose() {
@@ -29,6 +31,8 @@ class _AddressScreenState extends State<AddressScreen> {
     pincodeController.dispose();
     cityController.dispose();
   }
+
+  void onGooglePayResult(res) {}
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +102,17 @@ class _AddressScreenState extends State<AddressScreen> {
                       hintText: 'Town/City',
                     ),
                   ],
+                ),
+              ),
+              GooglePayButton(
+                paymentConfigurationAsset: 'gpay.asset',
+                onPaymentResult: onGooglePayResult,
+                paymentItems: paymentItems,
+                height: 50,
+                type: GooglePayButtonType.buy,
+                margin: const EdgeInsets.only(top: 15),
+                loadingIndicator: const Center(
+                  child: CircularProgressIndicator(),
                 ),
               ),
             ],
