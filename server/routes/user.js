@@ -72,7 +72,9 @@ userRouter.delete("/api/remove-from-cart/:id", auth, async (req, res) => {
     }
 })
 
+// Responsible for saving the user's address in the database.
 userRouter.post('/api/save-user-address', auth, async (req, res) => {
+    // Provided is handling the request to save the user's address in the database.
     try {
         const {address} = req.body
         let user = await User.findById(req.user)
@@ -84,11 +86,14 @@ userRouter.post('/api/save-user-address', auth, async (req, res) => {
     }
 })
 
+// Creating a new order for the currently authenticated user.
 userRouter.post('/api/order', auth, async (req, res) => {
+    // Creating a new order for the currently authenticated user.
     try {
         const {cart, totalPrice, address} = req.body
         let products = []
 
+        // Iterating over each item in the `cart` array and performing the following
         for (let i = 0; i < cart.length; i++) {
             let product = await Product.findById(cart[i].product._id)
             if (product.quantity >= cart[i].quantity) {
@@ -102,10 +107,12 @@ userRouter.post('/api/order', auth, async (req, res) => {
             }
         }
 
+        // Clear the user's shopping cart after creating a new order.
         let user = await User.findById(req.user)
         user.cart = []
         user = await user.save()
 
+        // Creating a new instance of the `Order` model with the provided data
         let order = new Order({
             products,
             totalPrice,
@@ -114,7 +121,19 @@ userRouter.post('/api/order', auth, async (req, res) => {
             orderAt: new Date().getTime(),
         })
 
+        // Saving the newly created order to the database. 
         order = await order.save()
+        res.json(order)
+    } catch (e) { // Used to handle any errors that occur within the `try` block.
+        res.status(500).json({error: e.message})
+    }
+})
+
+// Retrieving the orders of the currently authenticated user.
+userRouter.get('/api/orders/me', auth, async (req, res) => {
+    // Retrieving the orders of the currently authenticated user.
+    try {
+        const orders = await Order.find({userId: req.user})
         res.json(order)
     } catch (e) { // Used to handle any errors that occur within the `try` block.
         res.status(500).json({error: e.message})
