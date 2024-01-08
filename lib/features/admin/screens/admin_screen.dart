@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/admin/screens/order_screen.dart';
 import 'package:omazon_ecommerce_app/features/admin/screens/posts_screen.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -11,23 +12,21 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreenState extends State<AdminScreen> {
+  // Used to control the appearance and behavior of the bottom navigation bar in the `AdminScreen` widget.
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
 
+  // Used to determine which screen/page to display based on the selected index in the bottom navigation bar.
   List<Widget> pages = [
     const PostsScreen(),
     const Center(
       child: Text('Posts Page'),
     ),
-    const Center(
-      child: Text('Analytics Page'),
-    ),
-    const Center(
-      child: Text('Cart Page'),
-    ),
+    const OrdersScreen(),
   ];
 
+  // The function updates the current page state in a Dart application.
   void updatePage(int page) {
     setState(() {
       _page = page;

@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
 import 'package:omazon_ecommerce_app/features/search/screens/search_screen.dart';
 import 'package:omazon_ecommerce_app/models/order.dart';
+import 'package:omazon_ecommerce_app/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   static const String routeName = '/order-details';
@@ -17,13 +20,26 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  // Used to keep track of the current step in the Stepper widget.
+  int currentStep = 0;
+
   // Navigates to the search screen with a given query.
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
 
+  // Sets the currentStep variable to the status of the order widget.
+  @override
+  void initState() {
+    super.initState();
+    currentStep = widget.order.status;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Using the `Provider` package to access the `UserProvider` instance from the current `BuildContext`.
+    final user = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -100,21 +116,142 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Text(
-              'View order details',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'View order details',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Order Date:   ${DateFormat().format(
+                      DateTime.fromMicrosecondsSinceEpoch(
+                          widget.order.orderedAt),
+                    )}'),
+                    Text('Order ID:     ${widget.order.id}'),
+                    Text('Order Total:  ${widget.order.totalPrice}'),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              const Text(
+                'Purchase details',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    for (int i = 0; i < widget.order.products.length; i++)
+                      Row(
+                        children: [
+                          Image.network(
+                            widget.order.products[i].images[0],
+                            height: 120,
+                            width: 120,
+                          ),
+                          const SizedBox(width: 5),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.order.products[i].name,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  'Qty: ${widget.order.quantity[i].toString()}',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Tracking',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                ),
+                child: Stepper(
+                  currentStep: currentStep,
+                  controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+                    return const SizedBox();
+                  },
+                  steps: [
+                    Step(
+                      title: const Text('Pending'),
+                      content: const Text('Your order is yet to be delivered'),
+                      isActive: currentStep > 0,
+                      state: currentStep > 0
+                          ? StepState.complete
+                          : StepState.indexed,
+                    ),
+                    Step(
+                      title: const Text('Completed'),
+                      content: const Text(
+                          'Your order has been delivered, you are yet to sign'),
+                      isActive: currentStep > 1,
+                      state: currentStep > 1
+                          ? StepState.complete
+                          : StepState.indexed,
+                    ),
+                    Step(
+                      title: const Text('Received'),
+                      content: const Text(
+                          'Your order has been derlivered and signed by you'),
+                      isActive: currentStep > 2,
+                      state: currentStep > 2
+                          ? StepState.complete
+                          : StepState.indexed,
+                    ),
+                    Step(
+                      title: const Text('Delivered'),
+                      content: const Text(
+                          'Your order has been derlivered and signed by you'),
+                      isActive: currentStep >= 3,
+                      state: currentStep >= 3
+                          ? StepState.complete
+                          : StepState.indexed,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
