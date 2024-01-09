@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/admin/screens/analytics_screen.dart';
 import 'package:omazon_ecommerce_app/features/admin/screens/order_screen.dart';
 import 'package:omazon_ecommerce_app/features/admin/screens/posts_screen.dart';
 
@@ -20,9 +21,7 @@ class _AdminScreenState extends State<AdminScreen> {
   // Used to determine which screen/page to display based on the selected index in the bottom navigation bar.
   List<Widget> pages = [
     const PostsScreen(),
-    const Center(
-      child: Text('Posts Page'),
-    ),
+    const AnalyticsScreen(),
     const OrdersScreen(),
   ];
 

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:omazon_ecommerce_app/common/widgets/custom_button.dart';
 import 'package:omazon_ecommerce_app/constants/global_variables.dart';
+import 'package:omazon_ecommerce_app/features/admin/services/admin_services.dart';
 import 'package:omazon_ecommerce_app/features/search/screens/search_screen.dart';
 import 'package:omazon_ecommerce_app/models/order.dart';
 import 'package:omazon_ecommerce_app/providers/user_provider.dart';
@@ -20,8 +22,8 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
-  // Used to keep track of the current step in the Stepper widget.
   int currentStep = 0;
+  final AdminServices adminServices = AdminServices();
 
   // Navigates to the search screen with a given query.
   void navigateToSearchScreen(String query) {
@@ -35,10 +37,24 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     currentStep = widget.order.status;
   }
 
+  // Updates the order status by calling a service method and increments the current step if the update is successful.
+  void changeOrderStatus(int status) {
+    adminServices.changeOrderStatus(
+      context: context,
+      status: status + 1,
+      order: widget.order,
+      onSuccess: () {
+        setState(() {
+          currentStep += 1;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Using the `Provider` package to access the `UserProvider` instance from the current `BuildContext`.
-    final user = Provider.of<UserProvider>(context);
+    final user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -209,6 +225,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 child: Stepper(
                   currentStep: currentStep,
                   controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+                    if (user.type == 'admin') {
+                      return CustomButton(
+                          text: 'Done',
+                          onTap: () => changeOrderStatus(currentStep));
+                    }
                     return const SizedBox();
                   },
                   steps: [
