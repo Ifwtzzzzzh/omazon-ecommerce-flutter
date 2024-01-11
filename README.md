@@ -1,16 +1,61 @@
-# omazon_ecommerce_app
+# Omezon - Ecommerce App
 
-A new Flutter project.
+Omazon, the remarkable Amazon clone app crafted with Flutter, brings the world of online shopping to your fingertips. Offering a seamless and familiar shopping experience, Omazon mirrors the convenience, selection, and reliability that millions have come to expect from the original platform. Shop, explore, and experience the future of e-commerce, all within the sleek and user-friendly interface of Omazon, your go-to destination for a world of products and possibilities.
 
-## Getting Started
+<aside>
+💡 Need `flutter 3.3.10` version and `node v18.13.0` (11:04:36). Using Pixel XL API 30 Emulator (Cold Boot)
 
-This project is a starting point for a Flutter application.
+</aside>
 
-A few resources to get you started if this is your first Flutter project:
+This code to run API :
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```dart
+node server/index.js
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Feature
+
+---
+
+1. Email & Password Authentication
+2. Persisting Auth State
+3. Searching Products
+4. Filtering Products (Based on Category)
+5. Product Details
+6. Product Details
+7. Product Details
+8. Cart
+9. Checking out with Google/Apple Pay **(Stuck)**
+10. Viewing My Orders
+11. Viewing Order Details & Status
+12. Sign Out
+13. Admin Panel
+    - Viewing All Products
+    - Adding Products
+    - Deleting Products
+    - Viewing Orders
+    - Changing Order Status
+    - Viewing Total Earnings
+    - Viewing Category Based Earnings (on Graph)
+
+# Package
+
+---
+
+1. HTTP
+2. Express
+3. Mongoose
+4. Nodemon
+5. JWT (Json Web Token)
+6. Provider
+7. Shared Preferences
+8. Badges
+9. Carouser Slider
+10. Dotted Border
+11. File Picker
+12. Cloudinary Public
+13. Flutter Rating Bar
+14. Pay
+15. Intl
+16. Community Charts Flutter
+17. Fl Chart
